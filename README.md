@@ -90,5 +90,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 [Python 3]: <https://www.python.org/downloads/>
 [Kivy]: <https://kivy.org/#home>
 [xlwt]: <https://pypi.org/project/xlwt/#description>
-[releases]: <https://www.google.com>
-[here]: <https://www.google.com>
+[releases]: <https://github.com/BetterThanMoo/TheSortingHat/releases>
+[here]: <https://github.com/BetterThanMoo/TheSortingHat/blob/master/Example%20csv.csv>
