@@ -119,7 +119,11 @@ def get_print(output, big_or_small, number, filepath):
                     sheet1.write((intra_row_count+count), 4, 10, question_total_style)    
                     count+=1
                 
-                row_count+=10
+
+                if number == 1:
+                    row_count+=11
+                else:
+                    row_count+=10
 
             else:
                 if ingroup == True:
