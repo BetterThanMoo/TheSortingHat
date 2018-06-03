@@ -22,25 +22,29 @@ def run (group_size, participant_answers, big_or_small):
   start_time = time.time()                                                                   
   participants = []                                                                                                                                                        
   groups = []                                                                                        
-  final = []                                                                                       
+  final = []  
+  option_size = 5
   final_gender = []
   final_range = []
   final_options = []
   final_balance = []
+  if_one = 0
   group_questions = {}
   question_name_counter = 1
   group_name_counter = 1
   a = participant_answers.values()
   for i in a:
     num_of_q = len(i)
-    break
-  gender_question = 0                               
+    break                            
   group_counter = 0                                                                                     
   gender_question = False
-  participants.extend(range(1, len(participant_answers)+1))                                            
-  for group in combinations(participants, group_size):                                                       
-    groups.append(group)                                                                               
-
+  participants.extend(range(1, len(participant_answers)+1))
+  if group_size >= 2:
+    for group in combinations(participants, group_size):                                                       
+      groups.append(group)  
+  else:
+    for i in participants:
+      groups.append([i])
   while group_counter < len(groups):                                                                           
     question_track = 0                                                                                         
     while question_track < num_of_q:                                                                       
@@ -60,13 +64,13 @@ def run (group_size, participant_answers, big_or_small):
         if question_name_counter > 10:
           group_name_counter+=1
           question_name_counter = 1
-      while test <= group_size:                                                      
+      while test <= option_size:                                                      
         temp = question.count(test)                                                              
         question_real.append(temp)                                                               
         test+=1                                                                                
-      
+
       if question_track == 0:                                                            
-        gender_question = True                                                        
+        gender_question = True   
         getting_result = (diversity(question_real, gender_question, group_size))       
         final.append(getting_result)
         final_gender.append(getting_result)
@@ -109,7 +113,7 @@ def diversity(table, gender_question, group_size):
       return (sum(result))                 
     r = get_r(table, group_size)   
     o = get_o(table)                
-    b = get_b(table, o)        
+    b = get_b(table, o, group_size)        
     result.append(r + o + b)                
     return (sum(result), r, o, b)                 
 
@@ -123,22 +127,23 @@ of size (x) outputs a single range score for
 that group for that question
 ******************************************'''
 def get_r (group_question, num_participants):
-  max_option = 0
+  max_option = 4
   min_option = 0
   run = 0
-  run_max = 1
+  run_max = 4
+  
   
   for i in group_question:
-    run+=1
-    if i > 0:
-      min_option = run
+    if group_question[max_option] > 0:
       break
-  
-  for i in group_question:
-    if group_question[-run_max] > 0:
-      max_option = (num_participants - (run_max-1))
     else:
-      run_max+=1
+      max_option-=1
+  for i in group_question:
+    if group_question[min_option] > 0:
+      break
+    else:
+      min_option+=1
+  
   a_range = max_option - min_option
   
   if a_range - 1 >= 0:
@@ -168,13 +173,12 @@ score. It takes an input of numbers 0-5 for a
 group of size (x) outputs a single balance
 score for that group for that question
 ******************************************'''
-def get_b (group_question, option_score):
+def get_b (group_question, option_score, group_size): 
   active_check = []
   option = 0
-  
   for i in group_question:
-    if round(i*100/len(group_question)) != 0:
-      active_check.append(round(i*100/len(group_question)))
+    if round(i*100/(group_size)) != 0:
+      active_check.append(round(i*100/(group_size)))
     
     
   for j in active_check:
@@ -199,6 +203,8 @@ that group for that question. This is only
 relevant to question 2 of each group
 ******************************************'''
 def get_gender(group_question, group_size):
+  if group_size == 1:
+    return 0
   other_count = 0
   if group_question[2] > 0:
     other_count = group_question[2]
@@ -331,7 +337,6 @@ def figure(final, groups, participants, big_or_small, final_gender, final_range,
     range_groups.append(per_range[i])
     option_groups.append(per_options[i])
     balance_groups.append(per_balance[i])
-    
 
   return (result, range_groups, gender_groups, option_groups, balance_groups, per_question_result)
 
@@ -458,7 +463,6 @@ def intra(group_questions, winners, group_size, start_time):
       else:
         count+=1
     o_count+=1    
-    
   m_group_real = []
   for i in m_group:
     i = i.split(',')
