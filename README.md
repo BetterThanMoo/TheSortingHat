@@ -75,7 +75,6 @@ $ kivy kivygui.py
 ### Todo:
 - Multiprocessing support
 - General optimization
-- Allow for sample sizes of less than 5 people
 
 License
 ----
