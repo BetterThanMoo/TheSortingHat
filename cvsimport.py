@@ -47,7 +47,19 @@ def get_num_people(questionaire_answers, number=None, big_or_small=None):
       first_inside+=1
       second_inside = 0
     insider = 0
-    main_count+=1     
+    main_count+=1  
+    
+  inside_count = 1
+  outside_count = 0
+  while outside_count < len(answers_as_list):
+    while inside_count < len(answers_as_list[outside_count]):
+      if answers_as_list[outside_count][inside_count].isdigit() == False:
+        del(answers_as_list[outside_count][inside_count])
+        inside_count+=1
+      else:
+        inside_count+=1
+    outside_count+=1
+    inside_count = 1  
 
   with_numbers = []
   with_numbers_final = {}
@@ -84,6 +96,7 @@ def main(with_numbers_final, number, big_or_small, whoiswho):
   resulting = resulting1[0]
   resultington = resulting[0]
   
+  
   range_groups = resulting[1]
   gender_groups = resulting[2]
   option_groups = resulting[3]
@@ -102,14 +115,15 @@ def main(with_numbers_final, number, big_or_small, whoiswho):
     resultington = [w.replace(' {},'.format(k), ' {},'.format(v)) for w in resultington]
     resultington = [w.replace(' {})'.format(k), ' {})'.format(v)) for w in resultington]
     resultington = [w.replace('({})'.format(k), '({})'.format(v)) for w in resultington]
+    resultington = [w.replace('[{}]'.format(k), '[{}]'.format(v)) for w in resultington]  
     
   for k, v in whoiswho.items():
     similar_temp = [w.replace('({},'.format(k), '({},'.format(v)) for w in similar_temp]
     similar_temp = [w.replace(' {},'.format(k), ' {},'.format(v)) for w in similar_temp]
     similar_temp = [w.replace(' {})'.format(k), ' {})'.format(v)) for w in similar_temp]
     similar_temp = [w.replace('({})'.format(k), '({})'.format(v)) for w in similar_temp]  
+    similar_temp = [w.replace('[{}]'.format(k), '[{}]'.format(v)) for w in similar_temp] 
 
-  
   similar_real = {}
   count = 0
   for i in similar_temp:
@@ -136,9 +150,9 @@ def main(with_numbers_final, number, big_or_small, whoiswho):
   for i in resultington:
     count = 0
     while count < len(resultington[o_count]):
-      if i[count] == '(':
+      if i[count] == '(' or i[count] == '[':
         count_start = count+1
-      if i[count] == ')':
+      if i[count] == ')' or i[count] == ']':
         count_end = count
         m_group.append(i[count_start:count_end])
         break
