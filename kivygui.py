@@ -74,7 +74,7 @@ class Root(FloatLayout):
     def drop_down(self):
         self.drop_down = CustomDropDown()
         dropdown = DropDown()
-        notes = [i for i in range(5,(self.number)+1)]
+        notes = [i for i in range(1,(self.number)+1)]
         for note in notes:
             self.options+=1
             btn = Button(text='%r' % note, size_hint_y=None, height=30)
